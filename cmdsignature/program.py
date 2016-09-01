@@ -25,7 +25,7 @@ class ProgramSignatureParser(object):
 		cmd_max_len = 4
 		for cmd in self._commands:
 			cmd_max_len = max(cmd_max_len, len(cmd))
-	
+
 		print "Synopsis: %s COMMAND [OPTIONS]" % self._program
 		print ""
 		if self._description != "":
@@ -53,7 +53,7 @@ class ProgramSignatureParser(object):
 					raise ProgramSignatureError("Missing '%s' field in program signature" % field)
 
 			self._description = data["description"]
-	
+
 			for command in data["commands"]:
 				for field in ["name", "entry-point", "description"]:
 					if field not in command:
@@ -68,6 +68,12 @@ class ProgramSignatureParser(object):
 		self._argv = argv
 
 		return self
+
+	def getCommandFlags(self, command):
+		try:
+			return self._commands[command]["flags"]
+		except KeyError:
+			return []
 
 	def signature(self):
 		if len(self._argv) == 0:
