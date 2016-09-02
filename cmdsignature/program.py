@@ -14,9 +14,9 @@ class ProgramSignatureError(Exception):
 
 class ProgramSignatureParser(object):
 
-	def __init__(self, program, cmd_root = ""):
+	def __init__(self, program, cmd_root = "", description = ""):
 		self._commands = {}
-		self._description = ""
+		self._description = description
 		self._program = program
 		self._cmd_root = cmd_root
 		self._argv = []
@@ -52,7 +52,8 @@ class ProgramSignatureParser(object):
 				if field not in data:
 					raise ProgramSignatureError("Missing '%s' field in program signature" % field)
 
-			self._description = data["description"]
+			if self._description == "":
+				self._description = data["description"]
 
 			for command in data["commands"]:
 				for field in ["name", "entry-point", "description"]:
