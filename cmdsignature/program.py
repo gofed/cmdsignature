@@ -59,6 +59,13 @@ class ProgramSignatureParser(object):
 				for field in ["name", "entry-point", "description"]:
 					if field not in command:
 						raise ProgramSignatureError("Missing '%s' field of a command in 'commands' field" % field)
+
+				if "image" not in command:
+					try:
+						command["image"] = data["image"]
+					except KeyError:
+						logging.error("'image' key missing in '%s'" % signature)
+						exit(1)
 	
 				self._commands[command["name"]] = command
 
@@ -75,6 +82,12 @@ class ProgramSignatureParser(object):
 			return self._commands[command]["flags"]
 		except KeyError:
 			return []
+
+	def getCommandImage(self, command):
+		try:
+			return self._commands[command]["image"]
+		except KeyError:
+			return {}
 
 	def signature(self):
 		if len(self._argv) == 0:
