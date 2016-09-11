@@ -34,23 +34,24 @@ class CmdSignatureParser(object):
 			with open(definition, 'r') as f:
 				# Don't catch yaml.YAMLError
 				data = yaml.load(f)
-				for flag in data["flags"]:
-					if "target" not in flag:
-						flag["target"] = long2target(flag["long"])
+				if "flags" in data:
+					for flag in data["flags"]:
+						if "target" not in flag:
+							flag["target"] = long2target(flag["long"])
 
-					if "default" not in flag:
-						if flag["type"] == "boolean":
-							flag["default"] = False
-						elif flag["type"] == "integer":
-							flag["default"] = 0
-						else:
-							flag["default"] = ""
+						if "default" not in flag:
+							if flag["type"] == "boolean":
+								flag["default"] = False
+							elif flag["type"] == "integer":
+								flag["default"] = 0
+							else:
+								flag["default"] = ""
 
-					# if provided, override the default value
-					if flag["long"] in overrides:
-						flag["default"] = overrides[flag["long"]]
+						# if provided, override the default value
+						if flag["long"] in overrides:
+							flag["default"] = overrides[flag["long"]]
 
-					self._flags[flag["target"]] = flag
+						self._flags[flag["target"]] = flag
 
 				if "args" not in data:
 					continue
