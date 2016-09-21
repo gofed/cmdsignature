@@ -1,5 +1,3 @@
-#!/bin/python
-
 from .parser import CmdSignatureParser
 import os
 import logging

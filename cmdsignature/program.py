@@ -1,5 +1,3 @@
-#!/bin/python
-
 # 1. read main.yml with program/task specification
 # 1. generate a list of commands to run (help is handled separately)
 # 1. check a command exists, if so, print command to run
