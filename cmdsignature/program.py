@@ -6,6 +6,7 @@
 import yaml
 import logging
 import sys
+import os
 
 class ProgramSignatureError(Exception):
 	pass
@@ -107,6 +108,9 @@ class ProgramSignatureParser(object):
 		entry_point = self._commands[command]["entry-point"]
 		if self._cmd_root != "":
 			entry_point = "%s/%s" % (self._cmd_root, entry_point)
+
+		if os.path.islink(entry_point):
+			entry_point = "%s/%s" % (os.path.dirname(entry_point), os.readlink(entry_point))
 
 		# extension
 		interpret = ""
