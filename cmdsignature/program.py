@@ -109,14 +109,15 @@ class ProgramSignatureParser(object):
 		if self._cmd_root != "":
 			entry_point = "%s/%s" % (self._cmd_root, entry_point)
 
+		entry_point_file = os.path.basename(entry_point)
 		if os.path.islink(entry_point):
-			entry_point = "%s/%s" % (os.path.dirname(entry_point), os.readlink(entry_point))
+			entry_point_file = os.path.basename(os.readlink(entry_point))
 
 		# extension
 		interpret = ""
-		if entry_point.endswith(".py"):
+		if entry_point_file.endswith(".py"):
 			interpret = "python"
-		elif entry_point.endswith(".sh"):
+		elif entry_point_file.endswith(".sh"):
 			interpret = "bash"
 
 		# construct signature, print back args repr and do not interpret
